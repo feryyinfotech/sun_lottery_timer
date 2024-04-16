@@ -259,9 +259,11 @@ function generatedTimeEveryAfterEveryOneMinTRX() {
               console.log(e);
             }
             try {
+              console.log("Functon is called now",obj.number,num)
               const response = await axios.get(
-                `https://admin.sunlottery.fun/api/trx-winning-result?gamesno=${obj.number}&number=${num}&gameid=1`
+                `https://admin.sunlottery.fun/api/trx-winning-result?number=${num}&gameid=1`
               );
+
             } catch (e) {
               console.log(e);
             }
@@ -317,7 +319,7 @@ const generatedTimeEveryAfterEveryThreeMinTRX = () => {
             }
             try {
               const response = await axios.get(
-                `https://admin.sunlottery.fun/api/trx-winning-result?gamesno=${obj.number}&number=${num}&gameid=2`
+                `https://admin.sunlottery.fun/api/trx-winning-result?number=${num}&gameid=2`
               );
             } catch (e) {
               console.log(e);
@@ -378,7 +380,7 @@ const generatedTimeEveryAfterEveryFiveMinTRX = () => {
             }
             try {
               const response = await axios.get(
-                `https://admin.sunlottery.fun/api/trx-winning-result?gamesno=${obj?.number}&number=${num}&gameid=3`
+                `https://admin.sunlottery.fun/api/trx-winning-result?number=${num}&gameid=3`
               );
             } catch (e) {
               console.log(e);
@@ -411,16 +413,16 @@ if (trx) {
   const currentSecond = nowIST.seconds();
 
   // Calculate remaining minutes and seconds until 22:28 IST
-  const minutesRemaining = 30 - currentMinute - 1;
+  const minutesRemaining = 8 - currentMinute - 1;
   const secondsRemaining = 60 - currentSecond;
 
   const delay = (minutesRemaining * 60 + secondsRemaining) * 1000;
   console.log(minutesRemaining, secondsRemaining, delay);
 
   setTimeout(() => {
-    generatedTimeEveryAfterEveryOneMinTRX();
-    generatedTimeEveryAfterEveryThreeMinTRX();
-    generatedTimeEveryAfterEveryFiveMinTRX();
+    // generatedTimeEveryAfterEveryOneMinTRX();
+    // generatedTimeEveryAfterEveryThreeMinTRX();
+    // generatedTimeEveryAfterEveryFiveMinTRX();
     trx = false;
   }, delay);
 }
@@ -431,6 +433,7 @@ if (x) {
   const now = new Date();
   const secondsUntilNextMinute = 60 - now.getSeconds();
   setTimeout(() => {
+    // generatedTimeEveryAfterEveryOneMinTRX();
     generatedTimeEveryAfterEveryOneMin();
     generatedTimeEveryAfterEveryThreeMin();
     generatedTimeEveryAfterEveryFiveMin();
