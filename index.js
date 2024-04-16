@@ -88,9 +88,6 @@ function generateAndSendMessage() {
 
 // color prediction game time generated every 1 min
 function generatedTimeEveryAfterEveryOneMin() {
-  console.log("Hii functio is called");
-  const rule = new schedule.RecurrenceRule();
-  rule.second = new schedule.Range(0, 59);
   const job = schedule.scheduleJob("* * * * * *", function () {
     const currentTime = new Date();
     const timeToSend =
@@ -109,7 +106,6 @@ const oneMinCheckResult = async () => {
   try {
     await axios.get(`https://admin.sunlottery.fun/api/checkresult`);
   } catch (e) {
-    toast(e?.message);
     console.log(e);
   }
 };
@@ -119,7 +115,6 @@ const oneMinColorWinning = async () => {
       `https://admin.sunlottery.fun/api/colour_winning?id=1&gid=1`
     );
   } catch (e) {
-    toast(e?.message);
     console.log(e);
   }
 };
@@ -148,7 +143,6 @@ const oneMinCheckResult2min = async () => {
   try {
     await axios.get(`https://admin.sunlottery.fun/api/checkresult`);
   } catch (e) {
-    toast(e?.message);
     console.log(e);
   }
 };
@@ -159,7 +153,6 @@ const oneMinColorWinning2min = async () => {
       `https://admin.sunlottery.fun/api/colour_winning?id=2&gid=2`
     );
   } catch (e) {
-    toast(e?.message);
     console.log(e);
   }
 };
@@ -192,7 +185,6 @@ const oneMinCheckResult3sec = async () => {
   try {
     await axios.get(`https://admin.sunlottery.fun/api/checkresult`);
   } catch (e) {
-    toast(e?.message);
     console.log(e);
   }
 };
@@ -202,14 +194,11 @@ const oneMinColorWinning3sec = async () => {
       `https://admin.sunlottery.fun/api/colour_winning?id=3&gid=3`
     );
   } catch (e) {
-    toast(e?.message);
     console.log(e);
   }
 };
 
-let threeminApi = true;
-let fiveminApi = true;
-// TRX
+
 // color prediction game time generated every 1 min
 function generatedTimeEveryAfterEveryOneMinTRX() {
   let three = 0;
@@ -223,20 +212,10 @@ function generatedTimeEveryAfterEveryOneMinTRX() {
         ? 60 - currentTime.getSeconds()
         : currentTime.getSeconds();
     io.emit("onemintrx", timeToSend);
-    if (timeToSend === 9) {
+    if (timeToSend === 6) {
       const datetoAPISend = parseInt(new Date().getTime().toString());
       const actualtome = soment.tz("Asia/Kolkata");
       const time = actualtome.add(8, "hours").valueOf();
-      // if (three === 3 && threeminApi) {
-      //   generatedTimeEveryAfterEveryThreeMinTRXAPICall3Sec();
-      //   threeminApi = false;
-      // }
-
-      // if (five === 3 && fiveminApi) {
-      //   generatedTimeEveryAfterEveryThreeMinTRXAPICall5Sec();
-      //   fiveminApi = false;
-      // }
-
       try {
         if (three === 2) {
           three = 0;
@@ -274,14 +253,14 @@ function generatedTimeEveryAfterEveryOneMinTRX() {
             //  trx 1
             try {
               const response = await axios.post(
-                "https://zupeeter.com/Apitrx/insert_one_trx",
+                "https://admin.sunlottery.fun/api/insert-one-trx",
                 fd
               );
             } catch (e) {
               console.log(e);
             }
           }
-        }, [5000]);
+        }, [4000]);
       } catch (e) {
         console.log(e);
       }
@@ -289,103 +268,13 @@ function generatedTimeEveryAfterEveryOneMinTRX() {
   });
 }
 
-const generatedTimeEveryAfterEveryThreeMinTRXAPICall3Sec = () => {
-  const job = schedule.scheduleJob("51 */3 * * * *", function () {
-    const datetoAPISend = parseInt(new Date().getTime().toString());
-    const actualtome = soment.tz("Asia/Kolkata");
-    const time = actualtome.add(8, "hours").valueOf();
-    try {
-      setTimeout(async () => {
-        const res = await axios.get(
-          `https://apilist.tronscanapi.com/api/block?sort=-balance&start=0&limit=20&producer=&number=&start_timestamp=${datetoAPISend}&end_timestamp=${datetoAPISend}`
-        );
-        if (res?.data?.data[0]) {
-          const obj = res.data.data[0];
-          const fd = new FormData();
-          fd.append("hash", `**${obj.hash.slice(-4)}`);
-          fd.append("digits", `${obj.hash.slice(-5)}`);
-          fd.append("number", obj.number);
-          fd.append("time", moment(time).format("HH:mm:ss"));
-          const newString = obj.hash;
-          let num = null;
-          for (let i = newString.length - 1; i >= 0; i--) {
-            if (!isNaN(parseInt(newString[i]))) {
-              num = parseInt(newString[i]);
-              break;
-            }
-          }
-          fd.append("slotid", num);
-          fd.append("overall", JSON.stringify(obj));
-          //  trx 3
-          try {
-            const response = await axios.post(
-              "https://zupeeter.com/Apitrx/insert_three_trx",
-              fd
-            );
-          } catch (e) {
-            console.log(e);
-          }
-        }
-      }, [5000]);
-    } catch (e) {
-      console.log(e);
-    }
-  });
-};
-
-const generatedTimeEveryAfterEveryThreeMinTRXAPICall5Sec = () => {
-  const job = schedule.scheduleJob("51 */5 * * * *", function () {
-    const datetoAPISend = parseInt(new Date().getTime().toString());
-    const actualtome = soment.tz("Asia/Kolkata");
-    const time = actualtome.add(8, "hours").valueOf();
-    try {
-      setTimeout(async () => {
-        const res = await axios.get(
-          `https://apilist.tronscanapi.com/api/block?sort=-balance&start=0&limit=20&producer=&number=&start_timestamp=${datetoAPISend}&end_timestamp=${datetoAPISend}`
-        );
-        if (res?.data?.data[0]) {
-          const obj = res.data.data[0];
-          const fd = new FormData();
-          fd.append("hash", `**${obj.hash.slice(-4)}`);
-          fd.append("digits", `${obj.hash.slice(-5)}`);
-          fd.append("number", obj.number);
-          fd.append("time", moment(time).format("HH:mm:ss"));
-          const newString = obj.hash;
-          let num = null;
-          for (let i = newString.length - 1; i >= 0; i--) {
-            if (!isNaN(parseInt(newString[i]))) {
-              num = parseInt(newString[i]);
-              break;
-            }
-          }
-          fd.append("slotid", num);
-          fd.append("overall", JSON.stringify(obj));
-          //  trx 3
-          try {
-            const response = await axios.post(
-              "https://zupeeter.com/Apitrx/insert_five_trx",
-              fd
-            );
-          } catch (e) {
-            console.log(e);
-          }
-        }
-      }, [5000]);
-    } catch (e) {
-      console.log(e);
-    }
-  });
-};
-
-// generatedTimeEveryAfterEveryOneMinTRX();
-
 const generatedTimeEveryAfterEveryThreeMinTRX = () => {
   let min = 2;
   const job = schedule.scheduleJob("* * * * * *", function () {
     const currentTime = new Date().getSeconds(); // Get the current time
     const timeToSend = currentTime > 0 ? 60 - currentTime : currentTime;
     io.emit("threemintrx", `${min}_${timeToSend}`);
-    if (min === 0 && timeToSend === 9) {
+    if (min === 0 && timeToSend === 6) {
       const datetoAPISend = parseInt(new Date().getTime().toString());
       const actualtome = soment.tz("Asia/Kolkata");
       const time = actualtome.add(8, "hours").valueOf();
@@ -414,14 +303,14 @@ const generatedTimeEveryAfterEveryThreeMinTRX = () => {
             //  trx 3
             try {
               const response = await axios.post(
-                "https://zupeeter.com/Apitrx/insert_three_trx",
+                "https://admin.sunlottery.fun/api/insert-three-trx",
                 fd
               );
             } catch (e) {
               console.log(e);
             }
           }
-        }, [5000]);
+        }, [4000]);
       } catch (e) {
         console.log(e);
       }
@@ -439,7 +328,7 @@ const generatedTimeEveryAfterEveryFiveMinTRX = () => {
     const currentTime = new Date().getSeconds(); // Get the current time
     const timeToSend = currentTime > 0 ? 60 - currentTime : currentTime;
     io.emit("fivemintrx", `${min}_${timeToSend}`);
-    if (min === 0 && timeToSend === 9) {
+    if (min === 0 && timeToSend === 6) {
       const datetoAPISend = parseInt(new Date().getTime().toString());
       const actualtome = soment.tz("Asia/Kolkata");
       const time = actualtome.add(8, "hours").valueOf();
@@ -468,14 +357,14 @@ const generatedTimeEveryAfterEveryFiveMinTRX = () => {
             //  trx 3
             try {
               const response = await axios.post(
-                "https://zupeeter.com/Apitrx/insert_five_trx",
+                "https://admin.sunlottery.fun/api/insert-five-trx",
                 fd
               );
             } catch (e) {
               console.log(e);
             }
           }
-        }, [5000]);
+        }, [4000]);
       } catch (e) {
         console.log(e);
       }
@@ -502,37 +391,26 @@ if (trx) {
   const currentSecond = nowIST.seconds();
 
   // Calculate remaining minutes and seconds until 22:28 IST
-  const minutesRemaining = 30 - currentMinute - 1;
+  const minutesRemaining = 45 - currentMinute - 1;
   const secondsRemaining = 60 - currentSecond;
 
   const delay = (minutesRemaining * 60 + secondsRemaining) * 1000;
   console.log(minutesRemaining, secondsRemaining, delay);
 
   setTimeout(() => {
-    // generatedTimeEveryAfterEveryOneMinTRX();
-    // generatedTimeEveryAfterEveryThreeMinTRX();
-    // generatedTimeEveryAfterEveryFiveMinTRX();
+    generatedTimeEveryAfterEveryOneMinTRX();
+    generatedTimeEveryAfterEveryThreeMinTRX();
+    generatedTimeEveryAfterEveryFiveMinTRX();
     trx = false;
   }, delay);
 }
-// generatedTimeEveryAfterEveryThreeMinTRX();
 
-// const job = schedule.scheduleJob(rule, function () {
-//   if (x) {
-//     console.log("Function is called now")
-//     generateAndSendMessage();
-//     generatedTimeEveryAfterEveryOneMin();
-//     generatedTimeEveryAfterEveryThreeMin();
-//     generatedTimeEveryAfterEveryFiveMin();
-//     x = false;
-//   }
-// });
 
 if (x) {
   generateAndSendMessage();
   console.log("Waiting for the next minute to start...");
   const now = new Date();
-  const secondsUntilNextMinute = 40 - now.getSeconds();
+  const secondsUntilNextMinute = 60 - now.getSeconds();
   setTimeout(() => {
     generatedTimeEveryAfterEveryOneMin();
     generatedTimeEveryAfterEveryThreeMin();
