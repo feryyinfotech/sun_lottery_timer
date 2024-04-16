@@ -33,7 +33,7 @@ app.use("/api/v1", todoRoutes);
 
 const array = [
   2, 20, 2, 30, 2, 60, 10, 2, 3, 18, 2, 17, 12, 40, 10, 2, 5, 3, 2, 2, 12, 13,
-  10, 2, 2, 2, 20, 50, 2, 2
+  10, 2, 2, 2, 20, 50, 2, 2,
 ];
 
 function generateAndSendMessage() {
@@ -198,7 +198,6 @@ const oneMinColorWinning3sec = async () => {
   }
 };
 
-
 // color prediction game time generated every 1 min
 function generatedTimeEveryAfterEveryOneMinTRX() {
   let three = 0;
@@ -259,8 +258,15 @@ function generatedTimeEveryAfterEveryOneMinTRX() {
             } catch (e) {
               console.log(e);
             }
+            try {
+              const response = await axios.get(
+                `https://admin.sunlottery.fun/api/trx-winning-result?gamesno=${obj.number}&number=${num}&gameid=1`
+              );
+            } catch (e) {
+              console.log(e);
+            }
           }
-        }, [5000]);
+        }, [6000]);
       } catch (e) {
         console.log(e);
       }
@@ -309,8 +315,15 @@ const generatedTimeEveryAfterEveryThreeMinTRX = () => {
             } catch (e) {
               console.log(e);
             }
+            try {
+              const response = await axios.get(
+                `https://admin.sunlottery.fun/api/trx-winning-result?gamesno=${obj.number}&number=${num}&gameid=2`
+              );
+            } catch (e) {
+              console.log(e);
+            }
           }
-        }, [5000]);
+        }, [6000]);
       } catch (e) {
         console.log(e);
       }
@@ -363,8 +376,15 @@ const generatedTimeEveryAfterEveryFiveMinTRX = () => {
             } catch (e) {
               console.log(e);
             }
+            try {
+              const response = await axios.get(
+                `https://admin.sunlottery.fun/api/trx-winning-result?gamesno=${obj?.number}&number=${num}&gameid=3`
+              );
+            } catch (e) {
+              console.log(e);
+            }
           }
-        }, [5000]);
+        }, [6000]);
       } catch (e) {
         console.log(e);
       }
@@ -391,7 +411,7 @@ if (trx) {
   const currentSecond = nowIST.seconds();
 
   // Calculate remaining minutes and seconds until 22:28 IST
-  const minutesRemaining = 30 - currentMinute - 1;
+  const minutesRemaining = 15 - currentMinute - 1;
   const secondsRemaining = 60 - currentSecond;
 
   const delay = (minutesRemaining * 60 + secondsRemaining) * 1000;
@@ -404,7 +424,6 @@ if (trx) {
     trx = false;
   }, delay);
 }
-
 
 if (x) {
   generateAndSendMessage();
